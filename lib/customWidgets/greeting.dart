@@ -33,7 +33,7 @@ class _GreetingWidgetState extends State<GreetingWidget> {
               color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
         ),
         Text(
-          "Hello ${user.displayName!}",
+          "Hello 👋 ${user.displayName!}",
           style: const TextStyle(
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),
         ),

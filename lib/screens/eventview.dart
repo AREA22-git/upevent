@@ -5,6 +5,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:upevent/screens/get_ticket.dart';
 
 class EventViewScreen extends StatelessWidget {
+  final String uid;
   final String eventName;
   final String eventDate;
   final String eventSTime;
@@ -13,6 +14,7 @@ class EventViewScreen extends StatelessWidget {
   final String eventBannerURL;
   final String eventDays;
   final String eventDes;
+  final String eventPrice;
   const EventViewScreen({
     super.key,
     required this.eventName,
@@ -23,6 +25,8 @@ class EventViewScreen extends StatelessWidget {
     required this.eventBannerURL,
     required this.eventDays,
     required this.eventDes,
+    required this.eventPrice,
+    required this.uid,
   });
 
   @override
@@ -34,6 +38,8 @@ class EventViewScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => GetTicket(
+                          uid: uid,
+                          eventPrice: eventPrice,
                           eventName: eventName,
                           eventDate: eventDate,
                           eventSTime: eventSTime,
@@ -71,7 +77,7 @@ class EventViewScreen extends StatelessWidget {
                   ),
                   SafeArea(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(12.0),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: IconButton.filled(

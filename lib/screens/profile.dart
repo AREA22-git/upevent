@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:upevent/screens/about.dart';
 import 'package:upevent/screens/myticket.dart';
 
 import '../auth_provider/google_sign_in.dart';
@@ -27,11 +28,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(
             height: 130,
             width: 130,
-            child: ClipOval(
-                child: Image.network(
-              user.photoURL!.toString(),
-              fit: BoxFit.cover,
-            )),
+            child: Hero(
+              tag: "profile-image",
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    user.photoURL!.toString(),
+                    fit: BoxFit.cover,
+                  )),
+            ),
           ),
           const SizedBox(
             height: 10,
@@ -65,9 +70,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             leading: Icon(Icons.report),
             title: Text("Report a Event!"),
           ),
-          const ListTile(
-            leading: Icon(Icons.info_outline_rounded),
-            title: Text("About this App"),
+          ListTile(
+            leading: const Icon(Icons.info_outline_rounded),
+            title: const Text("About this App"),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const AboutScreen()));
+            },
           ),
           ListTile(
             leading: const Icon(
@@ -80,6 +89,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               final provider =
                   Provider.of<GoogleSignInProvider>(context, listen: false);
               provider.googleLogout();
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Sign out successfully.")));
             },
           ),
         ]),

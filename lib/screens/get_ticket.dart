@@ -1,9 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:upevent/screens/ticket_screen/ticket_user_details.dart';
+import 'package:upevent/screens/ticket_screen/ticket_user_payment.dart';
+import 'package:upevent/screens/ticket_screen/ticket_user_preview.dart';
 
 class GetTicket extends StatefulWidget {
+  final String uid;
   final String eventName;
+  final String eventPrice;
   final String eventDate;
   final String eventSTime;
   final String eventETime;
@@ -17,14 +22,17 @@ class GetTicket extends StatefulWidget {
       required this.eventSTime,
       required this.eventETime,
       required this.eventAddress,
-      required this.eventDays});
+      required this.eventDays,
+      required this.eventPrice,
+      required this.uid});
 
   @override
   State<GetTicket> createState() => _GetTicketState();
 }
 
+final ticketDatabaseReference = FirebaseDatabase.instance.ref("TicketData");
+
 class _GetTicketState extends State<GetTicket> {
-  final user = FirebaseAuth.instance.currentUser;
   final PageController _pageController = PageController();
   late TextEditingController userName = TextEditingController();
   late TextEditingController userEmail = TextEditingController();
@@ -33,13 +41,6 @@ class _GetTicketState extends State<GetTicket> {
   TextEditingController userRegNumber = TextEditingController();
   TextEditingController userCourseName = TextEditingController();
   TextEditingController userYear = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    userName.text = user!.displayName.toString();
-    userEmail.text = user!.email.toString();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,145 +63,37 @@ class _GetTicketState extends State<GetTicket> {
           ),
           Expanded(
             child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,
               children: [
                 //page 1:
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 24.0),
-                          child: Text(
-                            "Your basic details :",
-                            style: TextStyle(
-                                color: Colors.grey.shade700,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w900),
-                          ),
-                        ),
-                        TextField(
-                          controller: userName,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                              labelText: "Full Name (As on your ID Card)"),
-                        ),
-                        TextField(
-                          controller: userEmail,
-                          readOnly: true,
-                          style: const TextStyle(color: Colors.grey),
-                          decoration: const InputDecoration(
-                            labelText: "Your Email",
-                          ),
-                        ),
-                        TextField(
-                          controller: userMobile,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                              labelText: "Mobile number",
-                              hintText: "+91 99X XXXX XXX"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 24.0),
-                          child: Text(
-                            "Your university details :",
-                            style: TextStyle(
-                                color: Colors.grey.shade700,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w900),
-                          ),
-                        ),
-                        TextField(
-                          controller: userStudentEmail,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                              labelText: "Your student email"),
-                        ),
-                        TextField(
-                          controller: userRegNumber,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                              labelText: "Your registration number"),
-                        ),
-                        TextField(
-                          controller: userCourseName,
-                          style: const TextStyle(color: Colors.white),
-                          decoration:
-                              const InputDecoration(labelText: "Your course"),
-                        ),
-                        TextField(
-                          controller: userYear,
-                          style: const TextStyle(color: Colors.white),
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                              labelText: "Your current year"),
-                        ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        Center(
-                          child: ElevatedButton(
-                              onPressed: () {
-                                _pageController.nextPage(
-                                    duration: Durations.medium1,
-                                    curve: Curves.linear);
-                              },
-                              child: const Icon(Icons.arrow_forward)),
-                        )
-                      ],
-                    ),
-                  ),
+                TicketUserDetails(
+                  userCourseName: userCourseName,
+                  userEmail: userEmail,
+                  userMobile: userMobile,
+                  userName: userName,
+                  userRegNumber: userRegNumber,
+                  userStudentEmail: userStudentEmail,
+                  userYear: userYear,
+                  pageController: _pageController,
+                  uid: widget.uid,
                 ),
                 //page 2:
-                SingleChildScrollView(
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Text(
-                          "Your university details :",
-                          style: TextStyle(
-                              color: Colors.grey.shade700,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w900),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                              onPressed: () {
-                                _pageController.previousPage(
-                                    duration: Durations.medium1,
-                                    curve: Curves.linear);
-                              },
-                              child: const Icon(Icons.arrow_back)),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                _pageController.nextPage(
-                                    duration: Durations.medium1,
-                                    curve: Curves.linear);
-                              },
-                              child: const Icon(Icons.arrow_forward)),
-                        ],
-                      ),
-                    ],
-                  ),
-                )),
+                TicketUserPayment(
+                  pageController: _pageController,
+                  eventPrice: widget.eventPrice,
+                ),
                 //page 3:
-                Container(
-                  color: Colors.green,
-                  child: Center(
-                    child: Text(user!.providerData.toString()),
-                  ),
+                TicketUserPreview(
+                  uid: widget.uid,
+                  userName: userName.value.text,
+                  userRegNumber: userRegNumber.value.text,
+                  eventName: widget.eventName,
+                  eventDate: widget.eventDate,
+                  eventSTime: widget.eventSTime,
+                  eventETime: widget.eventETime,
+                  eventAddress: widget.eventAddress,
+                  eventDays: widget.eventDays,
                 ),
               ],
             ),

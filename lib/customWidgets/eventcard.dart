@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:upevent/screens/eventview.dart';
 
 class EventCard extends StatelessWidget {
+  final String uid;
   final String eventName;
   final String eventDate;
   final String eventSTime;
@@ -10,6 +11,7 @@ class EventCard extends StatelessWidget {
   final String eventBannerURL;
   final String eventDays;
   final String eventDes;
+  final String eventPrice;
   const EventCard({
     super.key,
     required this.eventName,
@@ -20,6 +22,8 @@ class EventCard extends StatelessWidget {
     required this.eventBannerURL,
     required this.eventDays,
     required this.eventDes,
+    required this.eventPrice,
+    required this.uid,
   });
 
   @override
@@ -30,6 +34,8 @@ class EventCard extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => EventViewScreen(
+                    uid: uid,
+                    eventPrice: eventPrice,
                     eventName: eventName,
                     eventDate: eventDate,
                     eventSTime: eventSTime,
@@ -45,6 +51,7 @@ class EventCard extends StatelessWidget {
           tag: "hero-card-tag$eventName",
           child: Container(
             height: 200,
+            width: 350,
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover, image: NetworkImage(eventBannerURL)),

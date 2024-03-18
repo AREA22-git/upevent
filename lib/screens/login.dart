@@ -24,11 +24,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = CachedVideoPlayerController.network(
-        "https://www.pexels.com/download/video/3722010/")
+    _controller = CachedVideoPlayerController.asset("assets/videos/demo.mp4")
       ..initialize().then((_) {
         _controller.setVolume(0);
-        _controller.setPlaybackSpeed(0.9);
+
         _controller.play();
         _controller.setLooping(true);
 
@@ -48,8 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: SizedBox(
                 height: _controller.value.size.height,
                 width: _controller.value.size.width,
-                child: CachedVideoPlayer(_controller)
-                ),
+                child: CachedVideoPlayer(_controller)),
           ),
         ),
         SizedBox.expand(
