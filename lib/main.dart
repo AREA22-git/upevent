@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:upevent/auth_provider/google_sign_in.dart';
 import 'package:upevent/constent.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:upevent/firebasePushNotification/handleNotification.dart';
 import 'package:upevent/firebase_options.dart';
 import 'screens/home.dart';
 import 'screens/login.dart';
@@ -16,6 +17,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await HandleNotification().initNotification();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const UpEventApp());

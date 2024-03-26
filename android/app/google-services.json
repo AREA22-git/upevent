@@ -51,11 +51,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "310630132904-9netpcjdasd6dksc2babs71hgqf4jdvh.apps.googleusercontent.com",
+          "client_id": "310630132904-r5hntmmvk4ekirafc2vvqgp822f30p6n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ugo.upevent",
-            "certificate_hash": "0214e358121af1348fc7fd07d02246f9055bf320"
+            "certificate_hash": "17d5e0b57bfa3c84416f579ef38ad950a14bc4f2"
           }
         },
         {

@@ -54,6 +54,8 @@ class _TicketUserDetailsState extends State<TicketUserDetails> {
     });
     widget.pageController
         .nextPage(duration: Durations.medium1, curve: Curves.linear);
+
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 
   @override
@@ -72,7 +74,7 @@ class _TicketUserDetailsState extends State<TicketUserDetails> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 24.0),
+              padding: const EdgeInsets.only(top: 14.0),
               child: Text(
                 "Your basic details :",
                 style: TextStyle(
@@ -98,6 +100,7 @@ class _TicketUserDetailsState extends State<TicketUserDetails> {
             TextField(
               controller: widget.userMobile,
               style: const TextStyle(color: Colors.white),
+              keyboardType: TextInputType.phone,
               decoration: const InputDecoration(
                   labelText: "Mobile number", hintText: "99X XXXX XXX"),
             ),
@@ -118,6 +121,7 @@ class _TicketUserDetailsState extends State<TicketUserDetails> {
                   const InputDecoration(labelText: "Your student email"),
             ),
             TextField(
+              keyboardType: TextInputType.number,
               controller: widget.userRegNumber,
               onChanged: (value) => setState(() {}),
               style: const TextStyle(color: Colors.white),
@@ -139,11 +143,12 @@ class _TicketUserDetailsState extends State<TicketUserDetails> {
               height: 24,
             ),
             Center(
-              child: ElevatedButton(
+              child: ElevatedButton.icon(
                   onPressed: () {
                     sumitDatatoDatabase(generateUniqueCode());
                   },
-                  child: const Icon(Icons.arrow_forward)),
+                  label: const Text("Next"),
+                  icon: const Icon(Icons.arrow_forward)),
             )
           ],
         ),

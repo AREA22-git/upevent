@@ -31,7 +31,7 @@ class AboutScreen extends StatelessWidget {
           ListTile(
             leading: Icon(HeroIcons.eye),
             title: Text("Dr. Vaibhav Bhatnagar Sir"),
-            subtitle: Text("Supervisor and Subject"),
+            subtitle: Text("Supervisor and Subject Teacher"),
           ),
           ListTile(
             leading: Icon(HeroIcons.rocket_launch),

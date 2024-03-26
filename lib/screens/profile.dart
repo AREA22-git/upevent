@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+
 import 'package:provider/provider.dart';
 import 'package:upevent/screens/about.dart';
-import 'package:upevent/screens/myticket.dart';
 
 import '../auth_provider/google_sign_in.dart';
 
@@ -54,14 +53,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(
             height: 10,
           ),
-          ListTile(
-            leading: const Icon(HeroIcons.ticket),
-            title: const Text("My tickets"),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MyTickets()));
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(HeroIcons.ticket),
+          //   title: const Text("My tickets"),
+          //   onTap: () {
+          //     Navigator.push(context,
+          //         MaterialPageRoute(builder: (context) => const MyTickets()));
+          //   },
+          // ),
           const ListTile(
             leading: Icon(Icons.add_alert),
             title: Text("Request for add Event"),

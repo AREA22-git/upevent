@@ -1,10 +1,7 @@
-import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+
 import 'package:upevent/customWidgets/greeting.dart';
-import 'package:upevent/screens/searchevent.dart';
 
 class AppbarCustom extends StatelessWidget {
   const AppbarCustom({super.key});
@@ -14,7 +11,7 @@ class AppbarCustom extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser!;
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 290,
+      height: 190,
       decoration: const BoxDecoration(
           gradient: LinearGradient(
         begin: Alignment.topRight,
@@ -56,29 +53,6 @@ class AppbarCustom extends StatelessWidget {
             ),
             const SizedBox(
               height: 12,
-            ),
-            GestureDetector(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SearchEvent())),
-              child: Container(
-                height: 44,
-                decoration: BoxDecoration(
-                    color: Colors.white60,
-                    borderRadius: BorderRadius.circular(12)),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Row(children: [
-                    Icon(
-                      HeroIcons.magnifying_glass,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text("Search for events")
-                  ]),
-                ),
-              ),
             ),
           ],
         ),

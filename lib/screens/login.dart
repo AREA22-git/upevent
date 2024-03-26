@@ -121,40 +121,42 @@ class _LoginScreenState extends State<LoginScreen> {
         Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: MediaQuery.of(context).size.height / 6,
+              height: MediaQuery.of(context).size.height / 5.7,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   color: Colors.white30,
                   borderRadius: BorderRadius.all(Radius.circular(12))),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton.icon(
-                        onPressed: () {
-                          final provider = Provider.of<GoogleSignInProvider>(
-                              context,
-                              listen: false);
-                          provider.googleLogin();
-                        },
-                        icon: SizedBox(
-                            height: 24,
-                            child: Image.asset("assets/images/google.png")),
-                        label: const Text(
-                          "Continue with Google",
-                          style: TextStyle(color: Colors.white, fontSize: 12),
-                        )),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Text(
-                      appDeveloper,
-                      textAlign: TextAlign.center,
-                    ),
-                    const Text(
-                      "Version: $appVersion",
-                      textAlign: TextAlign.center,
-                    )
-                  ]),
+              child: SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                          onPressed: () {
+                            final provider = Provider.of<GoogleSignInProvider>(
+                                context,
+                                listen: false);
+                            provider.googleLogin();
+                          },
+                          icon: SizedBox(
+                              height: 24,
+                              child: Image.asset("assets/images/google.png")),
+                          label: const Text(
+                            "Continue with Google",
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          )),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        appDeveloper,
+                        textAlign: TextAlign.center,
+                      ),
+                      const Text(
+                        "Version: $appVersion",
+                        textAlign: TextAlign.center,
+                      )
+                    ]),
+              ),
             ))
       ],
     ));

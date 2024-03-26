@@ -1,7 +1,14 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:ticket_material/ticket_material.dart';
-import 'package:upevent/screens/get_ticket.dart';
 
 class TicketUserPreview extends StatefulWidget {
   final String uid;
@@ -30,36 +37,78 @@ class TicketUserPreview extends StatefulWidget {
 }
 
 class _TicketUserPreviewState extends State<TicketUserPreview> {
+  ScreenshotController screenshotController = ScreenshotController();
   final user = FirebaseAuth.instance.currentUser;
-  late String Nname = "Go";
-  Future<String> getData() async {
-    final snapshot = await ticketDatabaseReference
-        .child('${widget.uid}/User Ticket List/${user!.uid}/User Name')
-        .get();
-    if (snapshot.exists) {
-      debugPrint(snapshot.value.toString());
-      return snapshot.value.toString();
-    } else {
-      debugPrint('No data available.');
-      return 'No data available.';
+  String nName = "";
+  Future getuserData() async {
+    String uid = widget.uid;
+    DatabaseReference userData = FirebaseDatabase.instance
+        .ref("TicketData/$uid/User Ticket List/${user!.uid}/User Name");
+    DatabaseEvent event = await userData.once();
+    nName = event.snapshot.value.toString();
+    print(nName);
+    setState(() {});
+  }
+
+  Future<String> takeTicketSave(Uint8List bytes) async {
+    try {
+      await [Permission.storage].request();
+      final time = DateTime.now()
+          .toIso8601String()
+          .replaceAll(":", "-")
+          .replaceAll(".", "-");
+
+      final result = await ImageGallerySaver.saveImage(bytes,
+          name: "${widget.eventName}_${user!.displayName}_$time");
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Your ticket is save in the gallery.")));
+      return result["filePath"];
+    } catch (e) {
+      print(e.toString());
+      return e.toString();
     }
+  }
+
+  @override
+  initState() {
+    super.initState();
+    getuserData();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(25.0),
-      child: RotatedBox(
-        quarterTurns: 1,
-        child: TicketMaterial(
-            radiusBorder: 16,
-            useAnimationScaleOnTap: true,
-            height: 150,
-            leftChild: _buildLeft(),
-            rightChild: _buildRight(),
-            radiusCircle: 4,
-            marginBetweenCircles: 8,
-            colorBackground: Colors.lime),
+      child: Screenshot(
+        controller: screenshotController,
+        child: RotatedBox(
+          quarterTurns: 1,
+          child: GestureDetector(
+            onDoubleTap: () async {
+              try {
+                final image = await screenshotController.capture();
+                if (image == null) return;
+
+                await takeTicketSave(image);
+              } catch (e) {
+                print(e.toString());
+              }
+            },
+            child: TicketMaterial(
+              radiusBorder: 16,
+              useAnimationScaleOnTap: true,
+              height: 150,
+              leftChild: _buildLeft(),
+              rightChild: _buildRight(),
+              radiusCircle: 4,
+              marginBetweenCircles: 8,
+              colorBackground:
+                  Colors.primaries[Random().nextInt(Colors.primaries.length)],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -150,7 +199,7 @@ class _TicketUserPreviewState extends State<TicketUserPreview> {
             children: [
               const Text("Ticket Owner"),
               Text(
-                Nname,
+                nName,
                 style:
                     const TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
               )
@@ -167,19 +216,15 @@ class _TicketUserPreviewState extends State<TicketUserPreview> {
       child: Center(
           child: Column(
         children: [
-          // QrImageView(
-          //   size: 100,
-          //   data: "",
-          // ),
-          // Text("")
-          IconButton(
-              onPressed: () {
-                setState(() {});
-              },
-              icon: const Icon(
-                Icons.abc,
-                size: 80,
-              ))
+          QrImageView(
+            size: 90,
+            data: user!.uid,
+          ),
+          const Text(
+            "Please double tap\non ticket to save in your gallery.",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 9.5, color: Colors.black87),
+          )
         ],
       )),
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
 
 class SearchEvent extends StatefulWidget {
   const SearchEvent({super.key});
@@ -14,25 +13,27 @@ class _SearchEventState extends State<SearchEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Search Event"),
-        ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: searchbox,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(HeroIcons.magnifying_glass),
-                  labelText: "Search for event",
-                  hintText: "Example: Oneiros",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                ),
-              ),
+        body: SingleChildScrollView(
+      child: Column(
+        children: [
+          SafeArea(
+            child: TextField(
+              style: const TextStyle(color: Colors.white),
+              controller: searchbox,
+              decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.black54,
+                  hintText: "Search event",
+                  prefixIcon: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.arrow_back)),
+                  border: InputBorder.none),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    ));
   }
 }
