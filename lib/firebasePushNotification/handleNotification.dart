@@ -11,9 +11,13 @@ class HandleNotification {
   final _firebaseNotification = FirebaseMessaging.instance;
 
   Future<void> initNotification() async {
-    await _firebaseNotification.requestPermission();
-    final fcmToken = await _firebaseNotification.getToken();
-    FirebaseMessaging.onBackgroundMessage(handleBackgroundNotification);
-    log("Token : ${fcmToken.toString()}");
+    try {
+      await _firebaseNotification.requestPermission();
+      final fcmToken = await _firebaseNotification.getToken();
+      FirebaseMessaging.onBackgroundMessage(handleBackgroundNotification);
+      log("Token : ${fcmToken.toString()}");
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

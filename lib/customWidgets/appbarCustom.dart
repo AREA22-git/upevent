@@ -11,7 +11,7 @@ class AppbarCustom extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser!;
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 190,
+      height: MediaQuery.of(context).size.height / 4.322,
       decoration: const BoxDecoration(
           gradient: LinearGradient(
         begin: Alignment.topRight,

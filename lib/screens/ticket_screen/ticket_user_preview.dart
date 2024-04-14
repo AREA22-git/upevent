@@ -218,7 +218,7 @@ class _TicketUserPreviewState extends State<TicketUserPreview> {
         children: [
           QrImageView(
             size: 90,
-            data: user!.uid,
+            data: "${user!.uid},${widget.uid}",
           ),
           const Text(
             "Please double tap\non ticket to save in your gallery.",

@@ -1,8 +1,11 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:upevent/screens/about.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../auth_provider/google_sign_in.dart';
 
@@ -17,6 +20,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
+    // ignore: non_constant_identifier_names
+    final Uri _url_regevent = Uri.parse("https://forms.gle/QMUHt6Sf22wRgYNL7");
+    final Uri _url_reportevent =
+        Uri.parse("https://forms.gle/nS1fUM8KuzSvxcor7");
+    // ignore: unused_element
+    Future<void> _launchUrl(url) async {
+      if (!await launchUrl(url)) {
+        throw Exception('Could not launch $url');
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile"),
@@ -61,13 +75,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
           //         MaterialPageRoute(builder: (context) => const MyTickets()));
           //   },
           // ),
-          const ListTile(
-            leading: Icon(Icons.add_alert),
-            title: Text("Request for add Event"),
+          ListTile(
+            onTap: () {
+              _launchUrl(_url_regevent);
+            },
+            leading: const Icon(Icons.add_alert),
+            title: const Text("Request for add Event"),
           ),
-          const ListTile(
-            leading: Icon(Icons.report),
-            title: Text("Report a Event!"),
+          ListTile(
+            onTap: () {
+              _launchUrl(_url_reportevent);
+            },
+            leading: const Icon(Icons.report),
+            title: const Text("Report a Event!"),
           ),
           ListTile(
             leading: const Icon(Icons.info_outline_rounded),
